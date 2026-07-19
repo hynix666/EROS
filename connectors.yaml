@@ -1,0 +1,6 @@
+# Connector fan-out order (§6.5.1). Bing activates only with BING_API_KEY.
+enabled:
+  - wikipedia
+  - openalex
+  - crossref
+  - bing

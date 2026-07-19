@@ -1,0 +1,40 @@
+{
+  "version": "3.2.0",
+  "updated_at": "2026-07-19T00:00:00Z",
+  "updated_by": "operator",
+  "adr_ref": "ADR-022",
+  "models": {
+    "drafter": {
+      "family": "llama3",
+      "variant": "llama3.1:8b",
+      "quantization": "q8_0",
+      "num_ctx": 12288,
+      "gguf_digest": "UNPINNED",
+      "modelfile_tag": "eros-drafter-12k"
+    },
+    "checker": {
+      "family": "qwen2",
+      "variant": "qwen2.5:7b",
+      "quantization": "q8_0",
+      "num_ctx": 12288,
+      "gguf_digest": "UNPINNED",
+      "modelfile_tag": "eros-checker-12k"
+    },
+    "arbiter": {
+      "family": "granite",
+      "variant": "granite3.1-dense:2b",
+      "quantization": "q8_0",
+      "num_ctx": 8192,
+      "gguf_digest": "UNPINNED",
+      "modelfile_tag": "eros-arbiter-8k"
+    },
+    "judge": {
+      "family": "phi4",
+      "variant": "phi4-mini",
+      "quantization": "q8_0",
+      "num_ctx": 8192,
+      "gguf_digest": "UNPINNED",
+      "modelfile_tag": "eros-judge-8k"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+# EROS v3.2 — local services. No Kubernetes (C2), no Redis, no Temporal (C3).
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: eros
+      POSTGRES_PASSWORD: eros
+      POSTGRES_DB: eros
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - eros_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eros -d eros"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    # WAL archiving for RPO < 1h is a host concern; see README §Backups.
+
+volumes:
+  eros_pgdata:

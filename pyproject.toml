@@ -1,0 +1,51 @@
+[project]
+name = "eros"
+version = "3.2.0"
+description = "EROS — Enterprise Research Operating System, Phase 1 Core Loop (canonical architecture v3.2)"
+requires-python = ">=3.11"
+dependencies = [
+    "psycopg[binary]>=3.1",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "httpx>=0.27",
+    "rapidfuzz>=3.6",
+    "dateparser>=1.2",
+    "langgraph>=0.2",
+    "langgraph-checkpoint-postgres>=1.0",
+]
+
+[project.optional-dependencies]
+# Vector embeddings (bge-large-en-v1.5, 1024-dim, CPU/ONNX — AVX-512 VNNI where present).
+# Without this extra the Retriever degrades to FTS-only, disclosed in the report footer.
+embeddings = ["fastembed>=0.3"]
+# spaCy NER path for the DGK (§6.8.1). Without it the kernel uses its
+# deterministic rule-based fallback (noisier; calibrate with M7 before arming Gate 4).
+ner = ["spacy>=3.7"]
+# PDF text extraction for the Ingestor (§6.5.1).
+pdf = ["pdfplumber>=0.11"]
+# JS-heavy page collection (§6.5 Browser Pool). Linux sandboxing (Firejail) is
+# configured separately; see docs.
+browser = ["playwright>=1.44"]
+dev = ["pytest>=8", "pytest-asyncio>=0.23"]
+
+[project.scripts]
+eros-api = "eros.lil.app:main"
+eros-mcp = "eros.mcp_server:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["eros*"]
+
+[tool.pytest.ini_options]
+markers = [
+    "gates: negative suite attacking the DB-welded trust chain (needs live Postgres)",
+    "dgk: Deterministic Groundedness Kernel self-test (pure Python)",
+    "shape: graph-shape CI assertions (C9)",
+    "core: core unit tests (budget, ingest ordering, chunker)",
+]
+testpaths = ["tests"]
